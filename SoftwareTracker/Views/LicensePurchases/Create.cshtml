@@ -1,0 +1,75 @@
+@model LicensePurchase
+@{
+    ViewData["Title"] = "Record License Purchase";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h2 class="mb-4"><i class="bi bi-receipt me-2"></i>Record License Purchase</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label asp-for="SoftwareTitleId" class="form-label fw-semibold"></label>
+                            <select asp-for="SoftwareTitleId" asp-items="ViewBag.SoftwareTitleId" class="form-select">
+                                <option value="">— Select Software Title —</option>
+                            </select>
+                            <span asp-validation-for="SoftwareTitleId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="LicenseType" class="form-label fw-semibold"></label>
+                            <select asp-for="LicenseType" asp-items="Html.GetEnumSelectList<LicenseType>()" class="form-select"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="PurchaseDate" class="form-label fw-semibold"></label>
+                            <input asp-for="PurchaseDate" type="date" class="form-control" />
+                            <span asp-validation-for="PurchaseDate" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Quantity" class="form-label fw-semibold"></label>
+                            <input asp-for="Quantity" type="number" min="1" class="form-control" />
+                            <span asp-validation-for="Quantity" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="UnitCost" class="form-label fw-semibold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input asp-for="UnitCost" type="number" step="0.01" min="0" class="form-control" />
+                            </div>
+                            <span asp-validation-for="UnitCost" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="LicenseKey" class="form-label fw-semibold"></label>
+                            <input asp-for="LicenseKey" class="form-control" placeholder="License key or serial number" />
+                            <span asp-validation-for="LicenseKey" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="OrderNumber" class="form-label fw-semibold"></label>
+                            <input asp-for="OrderNumber" class="form-control" placeholder="PO or order reference" />
+                            <span asp-validation-for="OrderNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Notes" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check2 me-1"></i>Save</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }

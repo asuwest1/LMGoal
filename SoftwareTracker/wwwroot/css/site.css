@@ -1,0 +1,25 @@
+body {
+    font-size: 0.9rem;
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+}
+
+.table th {
+    white-space: nowrap;
+}
+
+.card-header h5,
+.card-header h6 {
+    font-size: 0.95rem;
+}
+
+dl.row dt {
+    font-weight: 600;
+    color: #666;
+}
+
+code.user-select-all {
+    word-break: break-all;
+}

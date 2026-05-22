@@ -1,0 +1,39 @@
+@model SoftwareTitle
+@{
+    ViewData["Title"] = "Delete Software Title";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h2 class="mb-4 text-danger"><i class="bi bi-trash me-2"></i>Delete Software Title</h2>
+
+        <div class="card border-danger">
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <strong>Warning:</strong> Are you sure you want to delete <strong>@Model.Name</strong>?
+                    @if (Model.LicensePurchases.Any() || Model.Subscriptions.Any())
+                    {
+                        <br /><span class="small">This title has @Model.LicensePurchases.Count license purchase(s) and @Model.Subscriptions.Count subscription(s). You must remove them first.</span>
+                    }
+                </div>
+
+                <dl class="row">
+                    <dt class="col-4">Name</dt><dd class="col-8">@Model.Name</dd>
+                    <dt class="col-4">Vendor</dt><dd class="col-8">@(Model.Vendor ?? "—")</dd>
+                    <dt class="col-4">Category</dt><dd class="col-8">@(Model.Category ?? "—")</dd>
+                </dl>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger"
+                                @(Model.LicensePurchases.Any() || Model.Subscriptions.Any() ? "disabled" : "")>
+                            <i class="bi bi-trash me-1"></i>Delete
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

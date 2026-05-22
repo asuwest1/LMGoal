@@ -1,0 +1,93 @@
+@model IEnumerable<LicensePurchase>
+@{
+    ViewData["Title"] = "License Purchases";
+    var softwareTitles = ViewBag.SoftwareTitles as List<SoftwareTitle> ?? new();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2><i class="bi bi-receipt me-2"></i>License Purchases</h2>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus me-1"></i>Record Purchase</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search by name, key, or PO..." />
+    </div>
+    <div class="col-md-4">
+        <select name="softwareTitleId" class="form-select">
+            <option value="">All Software Titles</option>
+            @foreach (var st in softwareTitles)
+            {
+                <option value="@st.Id" selected="@(ViewBag.SoftwareTitleId?.ToString() == st.Id.ToString() ? "selected" : null)">@st.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-secondary w-100"><i class="bi bi-search me-1"></i>Search</button>
+    </div>
+    @if (!string.IsNullOrEmpty(ViewBag.Search as string) || ViewBag.SoftwareTitleId != null)
+    {
+        <div class="col-md-2">
+            <a asp-action="Index" class="btn btn-outline-danger w-100"><i class="bi bi-x me-1"></i>Clear</a>
+        </div>
+    }
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No license purchases found. <a asp-action="Create">Record your first purchase.</a></div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Software</th>
+                    <th>Purchase Date</th>
+                    <th>Type</th>
+                    <th class="text-center">Qty</th>
+                    <th>Total Cost</th>
+                    <th>Order #</th>
+                    <th class="text-center">Contracts</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">
+                            <a asp-controller="SoftwareTitles" asp-action="Details" asp-route-id="@item.SoftwareTitleId">
+                                @item.SoftwareTitle?.Name
+                            </a>
+                        </td>
+                        <td>@item.PurchaseDate.ToString("yyyy-MM-dd")</td>
+                        <td><span class="badge bg-light text-dark border">@item.LicenseType</span></td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td>@(item.TotalCost?.ToString("C") ?? "—")</td>
+                        <td><small class="text-muted">@item.OrderNumber</small></td>
+                        <td class="text-center">
+                            <a asp-controller="MaintenanceContracts" asp-action="Index" asp-route-licensePurchaseId="@item.Id"
+                               class="badge bg-success text-decoration-none">
+                                @item.MaintenanceContracts.Count
+                            </a>
+                        </td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary me-1">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <p class="text-muted small">@Model.Count() purchase(s) found</p>
+}

@@ -1,0 +1,102 @@
+@model IEnumerable<MaintenanceContract>
+@{
+    ViewData["Title"] = "Maintenance Contracts";
+    string filter = ViewBag.Filter ?? "";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2><i class="bi bi-tools me-2"></i>Maintenance Contracts</h2>
+    <a asp-action="Create" class="btn btn-success"><i class="bi bi-plus me-1"></i>Add Contract</a>
+</div>
+
+<div class="btn-group mb-3" role="group">
+    <a asp-action="Index" class="btn btn-outline-secondary @(filter == "" ? "active" : "")">All</a>
+    <a asp-action="Index" asp-route-filter="active" class="btn btn-outline-success @(filter == "active" ? "active" : "")">
+        Active
+    </a>
+    <a asp-action="Index" asp-route-filter="expiring" class="btn btn-outline-warning @(filter == "expiring" ? "active" : "")">
+        Expiring Soon
+    </a>
+    <a asp-action="Index" asp-route-filter="expired" class="btn btn-outline-secondary @(filter == "expired" ? "active" : "")">
+        Expired
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No maintenance contracts found. <a asp-action="Create">Add your first one.</a></div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Software</th>
+                    <th>Contract #</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Annual Cost</th>
+                    <th>Days Left</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="@(item.IsExpired ? "table-secondary" : item.IsExpiringSoon ? "table-warning" : "")">
+                        <td class="fw-semibold">
+                            <a asp-controller="SoftwareTitles" asp-action="Details"
+                               asp-route-id="@item.LicensePurchase?.SoftwareTitleId">
+                                @item.LicensePurchase?.SoftwareTitle?.Name
+                            </a>
+                        </td>
+                        <td><small>@(item.ContractNumber ?? "—")</small></td>
+                        <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
+                        <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
+                        <td>@(item.AnnualCost?.ToString("C") ?? "—")</td>
+                        <td>
+                            @if (item.IsExpired)
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                            else
+                            {
+                                <span class="@(item.DaysUntilExpiry <= 14 ? "text-danger fw-bold" : item.DaysUntilExpiry <= 30 ? "text-warning" : "")">
+                                    @item.DaysUntilExpiry
+                                </span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.IsExpired)
+                            {
+                                <span class="badge bg-secondary">Expired</span>
+                            }
+                            else if (item.IsExpiringSoon)
+                            {
+                                <span class="badge bg-warning text-dark">Expiring Soon</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                        </td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary me-1">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <p class="text-muted small">@Model.Count() contract(s)</p>
+}

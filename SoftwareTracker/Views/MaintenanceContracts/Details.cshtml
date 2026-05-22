@@ -1,0 +1,76 @@
+@model MaintenanceContract
+@{
+    ViewData["Title"] = "Maintenance Contract Details";
+    var software = Model.LicensePurchase?.SoftwareTitle?.Name ?? "—";
+}
+
+<div class="d-flex justify-content-between align-items-start mb-3">
+    <div>
+        <h2>Maintenance Contract</h2>
+        <p class="text-muted mb-0">@software</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-pencil me-1"></i>Edit
+        </a>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i>Back
+        </a>
+    </div>
+</div>
+
+<div class="row g-4 justify-content-center">
+    <div class="col-md-6">
+        <div class="card @(Model.IsExpired ? "border-secondary" : Model.IsExpiringSoon ? "border-warning" : "border-success")">
+            <div class="card-header @(Model.IsExpired ? "bg-secondary text-white" : Model.IsExpiringSoon ? "bg-warning" : "bg-success text-white")">
+                <h6 class="mb-0">
+                    @if (Model.IsExpired) { <text>Expired</text> }
+                    else if (Model.IsExpiringSoon) { <text>Expiring in @Model.DaysUntilExpiry days</text> }
+                    else { <text>Active — @Model.DaysUntilExpiry days remaining</text> }
+                </h6>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-5">Software</dt>
+                    <dd class="col-7">
+                        <a asp-controller="SoftwareTitles" asp-action="Details"
+                           asp-route-id="@Model.LicensePurchase?.SoftwareTitleId">@software</a>
+                    </dd>
+                    <dt class="col-5">License Purchase</dt>
+                    <dd class="col-7">
+                        <a asp-controller="LicensePurchases" asp-action="Details"
+                           asp-route-id="@Model.LicensePurchaseId">
+                            @Model.LicensePurchase?.PurchaseDate.ToString("yyyy-MM-dd")
+                        </a>
+                    </dd>
+                    <dt class="col-5">Contract #</dt>
+                    <dd class="col-7">@(Model.ContractNumber ?? "—")</dd>
+                    <dt class="col-5">Start Date</dt>
+                    <dd class="col-7">@Model.StartDate.ToString("MMMM d, yyyy")</dd>
+                    <dt class="col-5">End Date</dt>
+                    <dd class="col-7 @(Model.IsExpiringSoon ? "text-warning fw-bold" : Model.IsExpired ? "text-secondary" : "")">
+                        @Model.EndDate.ToString("MMMM d, yyyy")
+                    </dd>
+                    <dt class="col-5">Annual Cost</dt>
+                    <dd class="col-7"><strong>@(Model.AnnualCost?.ToString("C") ?? "—")</strong></dd>
+                    <dt class="col-5">Vendor Contact</dt>
+                    <dd class="col-7">@(Model.VendorContact ?? "—")</dd>
+                    <dt class="col-5">Email</dt>
+                    <dd class="col-7">
+                        @if (!string.IsNullOrEmpty(Model.ContactEmail))
+                        {
+                            <a href="mailto:@Model.ContactEmail">@Model.ContactEmail</a>
+                        }
+                        else { <span>—</span> }
+                    </dd>
+                    <dt class="col-5">Phone</dt>
+                    <dd class="col-7">@(Model.ContactPhone ?? "—")</dd>
+                </dl>
+                @if (!string.IsNullOrEmpty(Model.Notes))
+                {
+                    <hr /><p class="mb-0 small">@Model.Notes</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

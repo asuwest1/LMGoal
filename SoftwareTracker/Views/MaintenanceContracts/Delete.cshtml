@@ -1,0 +1,35 @@
+@model MaintenanceContract
+@{
+    ViewData["Title"] = "Delete Maintenance Contract";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h2 class="mb-4 text-danger"><i class="bi bi-trash me-2"></i>Delete Maintenance Contract</h2>
+
+        <div class="card border-danger">
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <strong>Warning:</strong> Are you sure you want to delete this maintenance contract for
+                    <strong>@Model.LicensePurchase?.SoftwareTitle?.Name</strong>?
+                </div>
+
+                <dl class="row">
+                    <dt class="col-4">Software</dt><dd class="col-8">@Model.LicensePurchase?.SoftwareTitle?.Name</dd>
+                    <dt class="col-4">Contract #</dt><dd class="col-8">@(Model.ContractNumber ?? "—")</dd>
+                    <dt class="col-4">Start Date</dt><dd class="col-8">@Model.StartDate.ToString("yyyy-MM-dd")</dd>
+                    <dt class="col-4">End Date</dt><dd class="col-8">@Model.EndDate.ToString("yyyy-MM-dd")</dd>
+                    <dt class="col-4">Annual Cost</dt><dd class="col-8">@(Model.AnnualCost?.ToString("C") ?? "—")</dd>
+                </dl>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
