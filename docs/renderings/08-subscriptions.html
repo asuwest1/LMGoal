@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subscriptions - Software License Tracker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="01-dashboard.html"><i class="bi bi-shield-check me-2"></i>License Tracker</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="01-dashboard.html"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="02-software-titles.html"><i class="bi bi-box-seam me-1"></i>Software Titles</a></li>
+          <li class="nav-item"><a class="nav-link" href="04-license-purchases.html"><i class="bi bi-receipt me-1"></i>License Purchases</a></li>
+          <li class="nav-item"><a class="nav-link" href="06-maintenance-contracts.html"><i class="bi bi-tools me-1"></i>Maintenance Contracts</a></li>
+          <li class="nav-item"><a class="nav-link active" href="08-subscriptions.html"><i class="bi bi-arrow-repeat me-1"></i>Subscriptions</a></li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="06-maintenance-contracts.html"><i class="bi bi-bell me-1 text-warning"></i>Expiring Soon</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid mt-3">
+  <main role="main" class="pb-3">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2><i class="bi bi-arrow-repeat me-2"></i>Subscriptions</h2>
+      <a href="09-subscription-create.html" class="btn btn-secondary"><i class="bi bi-plus me-1"></i>Add Subscription</a>
+    </div>
+
+    <!-- Filter buttons + software dropdown -->
+    <div class="d-flex gap-3 mb-3 flex-wrap">
+      <div class="btn-group" role="group">
+        <a href="#" class="btn btn-outline-secondary active">All</a>
+        <a href="#" class="btn btn-outline-success">Active</a>
+        <a href="#" class="btn btn-outline-warning">Expiring Soon</a>
+        <a href="#" class="btn btn-outline-secondary">Expired</a>
+      </div>
+      <select class="form-select form-select-sm" style="max-width:220px">
+        <option value="">All Software Titles</option>
+        <option>Adobe Creative Cloud</option>
+        <option>CrowdStrike Falcon</option>
+        <option>Jira Software</option>
+        <option>Microsoft Office 365</option>
+        <option>Salesforce CRM</option>
+        <option>Slack Business+</option>
+        <option>Zoom Meetings Pro</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Software</th>
+            <th>Reference</th>
+            <th>Start</th>
+            <th>Renewal Date</th>
+            <th>Billing</th>
+            <th>Cost/Period</th>
+            <th>Annual Cost</th>
+            <th>Days Left</th>
+            <th>Auto-Renew</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Expiring soon - warning -->
+          <tr class="table-warning">
+            <td class="fw-semibold"><a href="10-software-title-details.html">Slack Business+</a></td>
+            <td><small class="text-muted">SLACK-BIZ-2024</small></td>
+            <td>2024-06-20</td>
+            <td>2026-06-20</td>
+            <td><span class="badge bg-light text-dark border">Annual</span></td>
+            <td>$7,200.00</td>
+            <td>$7,200.00</td>
+            <td><span class="text-warning">29</span></td>
+            <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+            <td><span class="badge bg-warning text-dark">Expiring Soon</span></td>
+            <td class="text-end text-nowrap">
+              <a href="#" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-eye"></i></a>
+              <a href="09-subscription-create.html" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          <tr>
+            <td class="fw-semibold"><a href="10-software-title-details.html">Adobe Creative Cloud</a></td>
+            <td><small class="text-muted">ACC-TEAM-2025</small></td>
+            <td>2025-07-05</td>
+            <td>2026-07-05</td>
+            <td><span class="badge bg-light text-dark border">Annual</span></td>
+            <td>$9,600.00</td>
+            <td>$9,600.00</td>
+            <td>44</td>
+            <td class="text-center"><i class="bi bi-x-circle text-muted"></i></td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td class="text-end text-nowrap">
+              <a href="#" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-eye"></i></a>
+              <a href="09-subscription-create.html" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          <tr>
+            <td class="fw-semibold"><a href="10-software-title-details.html">Microsoft Office 365</a></td>
+            <td><small class="text-muted">M365-BUS-2025</small></td>
+            <td>2025-01-01</td>
+            <td>2026-12-31</td>
+            <td><span class="badge bg-light text-dark border">Annual</span></td>
+            <td>$18,000.00</td>
+            <td>$18,000.00</td>
+            <td>224</td>
+            <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td class="text-end text-nowrap">
+              <a href="#" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-eye"></i></a>
+              <a href="09-subscription-create.html" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          <tr>
+            <td class="fw-semibold"><a href="10-software-title-details.html">Salesforce CRM</a></td>
+            <td><small class="text-muted">SFDC-ENT-2025</small></td>
+            <td>2025-08-15</td>
+            <td>2026-08-15</td>
+            <td><span class="badge bg-light text-dark border">Annual</span></td>
+            <td>$48,000.00</td>
+            <td>$48,000.00</td>
+            <td>85</td>
+            <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td class="text-end text-nowrap">
+              <a href="#" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-eye"></i></a>
+              <a href="09-subscription-create.html" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          <tr>
+            <td class="fw-semibold"><a href="10-software-title-details.html">CrowdStrike Falcon</a></td>
+            <td><small class="text-muted">CS-FALCON-2025</small></td>
+            <td>2025-03-01</td>
+            <td>2026-03-01</td>
+            <td><span class="badge bg-light text-dark border">Annual</span></td>
+            <td>—</td>
+            <td>$24,000.00</td>
+            <td class="text-muted">—</td>
+            <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+            <td><span class="badge bg-secondary">Expired</span></td>
+            <td class="text-end text-nowrap">
+              <a href="#" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-eye"></i></a>
+              <a href="09-subscription-create.html" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          <tr>
+            <td class="fw-semibold"><a href="10-software-title-details.html">Jira Software</a></td>
+            <td><small class="text-muted">JIRA-CLOUD-2025</small></td>
+            <td>2025-04-01</td>
+            <td>2026-04-01</td>
+            <td><span class="badge bg-light text-dark border">Monthly</span></td>
+            <td>$600.00</td>
+            <td>$7,200.00</td>
+            <td class="text-muted">—</td>
+            <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+            <td><span class="badge bg-secondary">Expired</span></td>
+            <td class="text-end text-nowrap">
+              <a href="#" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-eye"></i></a>
+              <a href="09-subscription-create.html" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          <tr>
+            <td class="fw-semibold"><a href="10-software-title-details.html">Zoom Meetings Pro</a></td>
+            <td><small class="text-muted">ZOOM-PRO-2025</small></td>
+            <td>2025-05-01</td>
+            <td>2026-05-01</td>
+            <td><span class="badge bg-light text-dark border">Annual</span></td>
+            <td>$1,800.00</td>
+            <td>$1,800.00</td>
+            <td class="text-muted">—</td>
+            <td class="text-center"><i class="bi bi-x-circle text-muted"></i></td>
+            <td><span class="badge bg-secondary">Expired</span></td>
+            <td class="text-end text-nowrap">
+              <a href="#" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-eye"></i></a>
+              <a href="09-subscription-create.html" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-muted small">7 subscription(s)</p>
+
+  </main>
+</div>
+
+<footer class="border-top footer text-muted bg-light py-2 mt-4">
+  <div class="container-fluid"><small>Software License Tracker &copy; 2026</small></div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

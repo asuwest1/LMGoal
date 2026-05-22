@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screen Renderings - Software License Tracker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+<body class="bg-light">
+<div class="container py-5">
+
+  <div class="mb-5">
+    <h1 class="fw-bold"><i class="bi bi-shield-check me-2 text-primary"></i>Software License Tracker</h1>
+    <p class="lead text-muted">Screen Renderings &mdash; static HTML mockups with representative sample data</p>
+    <hr />
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Dashboard -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard</h5>
+          <p class="card-text text-muted small">Summary stat cards, annual spend, expiring contracts &amp; subscriptions, quick actions.</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="01-dashboard.html" class="btn btn-primary btn-sm">View &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Software Titles -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-box-seam me-2 text-primary"></i>Software Titles List</h5>
+          <p class="card-text text-muted small">Searchable, filterable table of all tracked software with linked license/subscription counts.</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="02-software-titles.html" class="btn btn-primary btn-sm">View &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Software Title Create -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-plus-circle me-2 text-primary"></i>Create Software Title</h5>
+          <p class="card-text text-muted small">Form to add a new software title (name, vendor, category, website, notes).</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="03-software-title-create.html" class="btn btn-primary btn-sm">View &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Software Title Details -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-info-circle me-2 text-primary"></i>Software Title Details</h5>
+          <p class="card-text text-muted small">Detail view showing metadata, linked license purchases, and maintenance contracts.</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="10-software-title-details.html" class="btn btn-primary btn-sm">View &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- License Purchases -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-receipt me-2 text-info"></i>License Purchases List</h5>
+          <p class="card-text text-muted small">All license purchases with purchase date, type, quantity, cost, and contract count.</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="04-license-purchases.html" class="btn btn-info btn-sm text-white">View &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- License Purchase Create -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-plus-circle me-2 text-info"></i>Record License Purchase</h5>
+          <p class="card-text text-muted small">Form to record a new purchase (software, date, type, quantity, cost, PO, license key).</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="05-license-purchase-create.html" class="btn btn-info btn-sm text-white">View &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Maintenance Contracts -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-tools me-2 text-success"></i>Maintenance Contracts List</h5>
+          <p class="card-text text-muted small">All contracts with status badges (Active / Expiring Soon / Expired), days remaining, and costs.</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="06-maintenance-contracts.html" class="btn btn-success btn-sm">View &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Maintenance Contract Create -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-plus-circle me-2 text-success"></i>Add Maintenance Contract</h5>
+          <p class="card-text text-muted small">Form to link a contract to a license purchase (contract #, dates, annual cost, notes).</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="07-maintenance-contract-create.html" class="btn btn-success btn-sm">View &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscriptions -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-arrow-repeat me-2 text-secondary"></i>Subscriptions List</h5>
+          <p class="card-text text-muted small">All subscriptions with billing period, cost, renewal date, auto-renew flag, and status.</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="08-subscriptions.html" class="btn btn-secondary btn-sm">View &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscription Create -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-plus-circle me-2 text-secondary"></i>Add Subscription</h5>
+          <p class="card-text text-muted small">Form to add a new subscription (software, reference, dates, billing, cost, auto-renew).</p>
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="09-subscription-create.html" class="btn btn-secondary btn-sm">View &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="mt-5" />
+  <p class="text-muted small">Software License Tracker &copy; 2026 &mdash; Static HTML renderings</p>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
