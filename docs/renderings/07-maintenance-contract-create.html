@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Maintenance Contract - Software License Tracker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="01-dashboard.html"><i class="bi bi-shield-check me-2"></i>License Tracker</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="01-dashboard.html"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="02-software-titles.html"><i class="bi bi-box-seam me-1"></i>Software Titles</a></li>
+          <li class="nav-item"><a class="nav-link" href="04-license-purchases.html"><i class="bi bi-receipt me-1"></i>License Purchases</a></li>
+          <li class="nav-item"><a class="nav-link active" href="06-maintenance-contracts.html"><i class="bi bi-tools me-1"></i>Maintenance Contracts</a></li>
+          <li class="nav-item"><a class="nav-link" href="08-subscriptions.html"><i class="bi bi-arrow-repeat me-1"></i>Subscriptions</a></li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="06-maintenance-contracts.html"><i class="bi bi-bell me-1 text-warning"></i>Expiring Soon</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid mt-3">
+  <main role="main" class="pb-3">
+
+    <div class="row justify-content-center">
+      <div class="col-lg-7 col-md-9">
+
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="06-maintenance-contracts.html">Maintenance Contracts</a></li>
+            <li class="breadcrumb-item active">Add Contract</li>
+          </ol>
+        </nav>
+
+        <div class="card">
+          <div class="card-header">
+            <h4 class="mb-0"><i class="bi bi-tools me-2"></i>Add Maintenance Contract</h4>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">License Purchase <span class="text-danger">*</span></label>
+                <select class="form-select">
+                  <option value="">— Select License Purchase —</option>
+                  <option>AutoCAD 2024 — PO-2024-011 (2024-03-01)</option>
+                  <option>GitHub Enterprise — PO-2025-001 (2025-01-01)</option>
+                  <option selected>Microsoft Office 365 — PO-2024-001 (2024-01-15)</option>
+                  <option>Salesforce CRM — PO-2023-022 (2023-08-15)</option>
+                  <option>SQL Server 2022 — PO-2022-031 (2022-11-01)</option>
+                  <option>Tableau Desktop — PO-2023-038 (2023-09-15)</option>
+                  <option>Windows Server 2022 — PO-2022-017 (2022-07-01)</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Contract Number</label>
+                <input type="text" class="form-control" placeholder="e.g. MS-SA-2026-001" />
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Start Date <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" value="2026-05-22" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">End Date <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" value="2027-05-22" />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Annual Cost</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input type="number" class="form-control" placeholder="0.00" step="0.01" />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Vendor Contact</label>
+                <input type="text" class="form-control" placeholder="e.g. John Smith, john@microsoft.com" />
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Notes</label>
+                <textarea class="form-control" rows="3" placeholder="Contract covers software updates and priority support…"></textarea>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Save</button>
+                <a href="06-maintenance-contracts.html" class="btn btn-outline-secondary">Cancel</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="border-top footer text-muted bg-light py-2 mt-4">
+  <div class="container-fluid"><small>Software License Tracker &copy; 2026</small></div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
