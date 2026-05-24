@@ -6,7 +6,14 @@
 <div class="d-flex justify-content-between align-items-start mb-3">
     <div>
         <h2>@Model.Name</h2>
-        <p class="text-muted mb-0">@Model.Vendor @(Model.Category != null ? $"· {Model.Category}" : "")</p>
+        <p class="text-muted mb-0">
+        @if (Model.Vendor != null)
+        {
+            <a asp-controller="Vendors" asp-action="Details" asp-route-id="@Model.Vendor.Id"
+               class="text-muted text-decoration-none">@Model.Vendor.Name</a>
+        }
+        @(Model.Category != null ? $"· {Model.Category}" : "")
+    </p>
     </div>
     <div class="d-flex gap-2">
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-sm">
@@ -25,7 +32,13 @@
             <div class="card-body">
                 <dl class="row mb-0">
                     <dt class="col-5">Vendor</dt>
-                    <dd class="col-7">@(Model.Vendor ?? "—")</dd>
+                    <dd class="col-7">
+                        @if (Model.Vendor != null)
+                        {
+                            <a asp-controller="Vendors" asp-action="Details" asp-route-id="@Model.Vendor.Id">@Model.Vendor.Name</a>
+                        }
+                        else { <span>—</span> }
+                    </dd>
                     <dt class="col-5">Category</dt>
                     <dd class="col-7">@(Model.Category ?? "—")</dd>
                     <dt class="col-5">Website</dt>

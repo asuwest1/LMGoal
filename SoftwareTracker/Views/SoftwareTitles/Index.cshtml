@@ -56,7 +56,13 @@ else
                 {
                     <tr>
                         <td class="fw-semibold">@item.Name</td>
-                        <td>@item.Vendor</td>
+                        <td>
+                            @if (item.Vendor != null)
+                            {
+                                <a asp-controller="Vendors" asp-action="Details" asp-route-id="@item.Vendor.Id"
+                                   class="text-decoration-none">@item.Vendor.Name</a>
+                            }
+                        </td>
                         <td>@(item.Category != null ? $"{item.Category}" : "")</td>
                         <td class="text-center">
                             <a asp-controller="LicensePurchases" asp-action="Index" asp-route-softwareTitleId="@item.Id"

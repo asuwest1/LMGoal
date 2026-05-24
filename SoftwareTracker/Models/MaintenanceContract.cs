@@ -12,6 +12,10 @@ public class MaintenanceContract
     public int LicensePurchaseId { get; set; }
     public LicensePurchase? LicensePurchase { get; set; }
 
+    [Display(Name = "Vendor")]
+    public int? VendorId { get; set; }
+    public Vendor? Vendor { get; set; }
+
     [StringLength(200)]
     [Display(Name = "Contract Number")]
     public string? ContractNumber { get; set; }

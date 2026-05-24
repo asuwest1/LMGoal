@@ -18,6 +18,12 @@
                         <select asp-for="LicensePurchaseId" asp-items="ViewBag.LicensePurchaseId" class="form-select"></select>
                         <span asp-validation-for="LicensePurchaseId" class="text-danger small"></span>
                     </div>
+                    <div class="mb-3">
+                        <label asp-for="VendorId" class="form-label fw-semibold">Vendor</label>
+                        <select asp-for="VendorId" asp-items="ViewBag.VendorId" class="form-select">
+                            <option value="">— No Vendor —</option>
+                        </select>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label asp-for="ContractNumber" class="form-label fw-semibold"></label>

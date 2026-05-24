@@ -22,6 +22,36 @@ namespace SoftwareTracker.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("SoftwareTracker.Models.Vendor", b =>
+            {
+                b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("int");
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                b.Property<string>("Name").IsRequired().HasMaxLength(200).HasColumnType("nvarchar(200)");
+                b.Property<string>("Website").HasMaxLength(500).HasColumnType("nvarchar(500)");
+                b.Property<string>("Phone").HasMaxLength(50).HasColumnType("nvarchar(50)");
+                b.Property<string>("Email").HasMaxLength(200).HasColumnType("nvarchar(200)");
+                b.Property<string>("Address").HasMaxLength(500).HasColumnType("nvarchar(500)");
+                b.Property<string>("Notes").HasMaxLength(1000).HasColumnType("nvarchar(1000)");
+                b.HasKey("Id");
+                b.ToTable("Vendors");
+            });
+
+            modelBuilder.Entity("SoftwareTracker.Models.VendorContact", b =>
+            {
+                b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("int");
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                b.Property<int>("VendorId").HasColumnType("int");
+                b.Property<string>("Name").IsRequired().HasMaxLength(200).HasColumnType("nvarchar(200)");
+                b.Property<string>("Title").HasMaxLength(100).HasColumnType("nvarchar(100)");
+                b.Property<string>("Email").HasMaxLength(200).HasColumnType("nvarchar(200)");
+                b.Property<string>("Phone").HasMaxLength(50).HasColumnType("nvarchar(50)");
+                b.Property<bool>("IsPrimary").HasColumnType("bit");
+                b.Property<string>("Notes").HasMaxLength(500).HasColumnType("nvarchar(500)");
+                b.HasKey("Id");
+                b.HasIndex("VendorId");
+                b.ToTable("VendorContacts");
+            });
+
             modelBuilder.Entity("SoftwareTracker.Models.LicensePurchase", b =>
             {
                 b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("int");
@@ -33,9 +63,11 @@ namespace SoftwareTracker.Migrations
                 b.Property<DateTime>("PurchaseDate").HasColumnType("datetime2");
                 b.Property<int>("Quantity").HasColumnType("int");
                 b.Property<int>("SoftwareTitleId").HasColumnType("int");
+                b.Property<int?>("VendorId").HasColumnType("int");
                 b.Property<decimal?>("UnitCost").HasColumnType("decimal(18,2)");
                 b.HasKey("Id");
                 b.HasIndex("SoftwareTitleId");
+                b.HasIndex("VendorId");
                 b.ToTable("LicensePurchases");
             });
 
@@ -52,8 +84,10 @@ namespace SoftwareTracker.Migrations
                 b.Property<string>("Notes").HasMaxLength(1000).HasColumnType("nvarchar(1000)");
                 b.Property<DateTime>("StartDate").HasColumnType("datetime2");
                 b.Property<string>("VendorContact").HasMaxLength(200).HasColumnType("nvarchar(200)");
+                b.Property<int?>("VendorId").HasColumnType("int");
                 b.HasKey("Id");
                 b.HasIndex("LicensePurchaseId");
+                b.HasIndex("VendorId");
                 b.ToTable("MaintenanceContracts");
             });
 
@@ -64,9 +98,10 @@ namespace SoftwareTracker.Migrations
                 b.Property<string>("Category").HasMaxLength(100).HasColumnType("nvarchar(100)");
                 b.Property<string>("Description").HasMaxLength(1000).HasColumnType("nvarchar(1000)");
                 b.Property<string>("Name").IsRequired().HasMaxLength(200).HasColumnType("nvarchar(200)");
-                b.Property<string>("Vendor").HasMaxLength(200).HasColumnType("nvarchar(200)");
+                b.Property<int?>("VendorId").HasColumnType("int");
                 b.Property<string>("Website").HasMaxLength(500).HasColumnType("nvarchar(500)");
                 b.HasKey("Id");
+                b.HasIndex("VendorId");
                 b.ToTable("SoftwareTitles");
             });
 
@@ -83,9 +118,30 @@ namespace SoftwareTracker.Migrations
                 b.Property<int>("SoftwareTitleId").HasColumnType("int");
                 b.Property<DateTime>("StartDate").HasColumnType("datetime2");
                 b.Property<string>("SubscriptionReference").HasMaxLength(200).HasColumnType("nvarchar(200)");
+                b.Property<int?>("VendorId").HasColumnType("int");
                 b.HasKey("Id");
                 b.HasIndex("SoftwareTitleId");
+                b.HasIndex("VendorId");
                 b.ToTable("Subscriptions");
+            });
+
+            modelBuilder.Entity("SoftwareTracker.Models.VendorContact", b =>
+            {
+                b.HasOne("SoftwareTracker.Models.Vendor", "Vendor")
+                    .WithMany("Contacts")
+                    .HasForeignKey("VendorId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+                b.Navigation("Vendor");
+            });
+
+            modelBuilder.Entity("SoftwareTracker.Models.SoftwareTitle", b =>
+            {
+                b.HasOne("SoftwareTracker.Models.Vendor", "Vendor")
+                    .WithMany("SoftwareTitles")
+                    .HasForeignKey("VendorId")
+                    .OnDelete(DeleteBehavior.SetNull);
+                b.Navigation("Vendor");
             });
 
             modelBuilder.Entity("SoftwareTracker.Models.LicensePurchase", b =>
@@ -96,6 +152,11 @@ namespace SoftwareTracker.Migrations
                     .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired();
                 b.Navigation("SoftwareTitle");
+                b.HasOne("SoftwareTracker.Models.Vendor", "Vendor")
+                    .WithMany("LicensePurchases")
+                    .HasForeignKey("VendorId")
+                    .OnDelete(DeleteBehavior.SetNull);
+                b.Navigation("Vendor");
             });
 
             modelBuilder.Entity("SoftwareTracker.Models.MaintenanceContract", b =>
@@ -106,6 +167,11 @@ namespace SoftwareTracker.Migrations
                     .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired();
                 b.Navigation("LicensePurchase");
+                b.HasOne("SoftwareTracker.Models.Vendor", "Vendor")
+                    .WithMany("MaintenanceContracts")
+                    .HasForeignKey("VendorId")
+                    .OnDelete(DeleteBehavior.SetNull);
+                b.Navigation("Vendor");
             });
 
             modelBuilder.Entity("SoftwareTracker.Models.Subscription", b =>
@@ -116,6 +182,11 @@ namespace SoftwareTracker.Migrations
                     .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired();
                 b.Navigation("SoftwareTitle");
+                b.HasOne("SoftwareTracker.Models.Vendor", "Vendor")
+                    .WithMany("Subscriptions")
+                    .HasForeignKey("VendorId")
+                    .OnDelete(DeleteBehavior.SetNull);
+                b.Navigation("Vendor");
             });
 
             modelBuilder.Entity("SoftwareTracker.Models.LicensePurchase", b =>
@@ -126,6 +197,15 @@ namespace SoftwareTracker.Migrations
             modelBuilder.Entity("SoftwareTracker.Models.SoftwareTitle", b =>
             {
                 b.Navigation("LicensePurchases");
+                b.Navigation("Subscriptions");
+            });
+
+            modelBuilder.Entity("SoftwareTracker.Models.Vendor", b =>
+            {
+                b.Navigation("Contacts");
+                b.Navigation("SoftwareTitles");
+                b.Navigation("LicensePurchases");
+                b.Navigation("MaintenanceContracts");
                 b.Navigation("Subscriptions");
             });
 #pragma warning restore 612, 618

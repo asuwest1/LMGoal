@@ -23,6 +23,10 @@ public class Subscription
     public int SoftwareTitleId { get; set; }
     public SoftwareTitle? SoftwareTitle { get; set; }
 
+    [Display(Name = "Vendor")]
+    public int? VendorId { get; set; }
+    public Vendor? Vendor { get; set; }
+
     [StringLength(200)]
     [Display(Name = "Subscription ID / Reference")]
     public string? SubscriptionReference { get; set; }

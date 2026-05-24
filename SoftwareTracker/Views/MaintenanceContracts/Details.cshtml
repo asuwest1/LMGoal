@@ -53,6 +53,14 @@
                     </dd>
                     <dt class="col-5">Annual Cost</dt>
                     <dd class="col-7"><strong>@(Model.AnnualCost?.ToString("C") ?? "—")</strong></dd>
+                    <dt class="col-5">Vendor</dt>
+                    <dd class="col-7">
+                        @if (Model.Vendor != null)
+                        {
+                            <a asp-controller="Vendors" asp-action="Details" asp-route-id="@Model.Vendor.Id">@Model.Vendor.Name</a>
+                        }
+                        else { <span>—</span> }
+                    </dd>
                     <dt class="col-5">Vendor Contact</dt>
                     <dd class="col-7">@(Model.VendorContact ?? "—")</dd>
                     <dt class="col-5">Email</dt>

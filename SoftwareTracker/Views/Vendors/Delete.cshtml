@@ -1,0 +1,60 @@
+@model Vendor
+@{
+    ViewData["Title"] = "Delete Vendor";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h2 class="mb-4 text-danger"><i class="bi bi-trash me-2"></i>Delete Vendor</h2>
+
+        <div class="card border-danger">
+            <div class="card-body">
+                <p class="lead">Are you sure you want to delete <strong>@Model.Name</strong>?</p>
+
+                @{
+                    var total = Model.Contacts.Count + Model.SoftwareTitles.Count +
+                                Model.LicensePurchases.Count + Model.MaintenanceContracts.Count +
+                                Model.Subscriptions.Count;
+                }
+                @if (total > 0)
+                {
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        This vendor has linked records:
+                        <ul class="mb-0 mt-1">
+                            @if (Model.Contacts.Count > 0) { <li>@Model.Contacts.Count contact(s)</li> }
+                            @if (Model.SoftwareTitles.Count > 0) { <li>@Model.SoftwareTitles.Count software title(s) — vendor link will be cleared</li> }
+                            @if (Model.LicensePurchases.Count > 0) { <li>@Model.LicensePurchases.Count license purchase(s) — vendor link will be cleared</li> }
+                            @if (Model.MaintenanceContracts.Count > 0) { <li>@Model.MaintenanceContracts.Count maintenance contract(s) — vendor link will be cleared</li> }
+                            @if (Model.Subscriptions.Count > 0) { <li>@Model.Subscriptions.Count subscription(s) — vendor link will be cleared</li> }
+                        </ul>
+                        <div class="mt-1">Contacts will be permanently deleted. Other linked records will have their vendor cleared.</div>
+                    </div>
+                }
+
+                <dl class="row">
+                    @if (!string.IsNullOrEmpty(Model.Email))
+                    {
+                        <dt class="col-4">Email</dt><dd class="col-8">@Model.Email</dd>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Phone))
+                    {
+                        <dt class="col-4">Phone</dt><dd class="col-8">@Model.Phone</dd>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Website))
+                    {
+                        <dt class="col-4">Website</dt><dd class="col-8">@Model.Website</dd>
+                    }
+                </dl>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete Vendor</button>
+                        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

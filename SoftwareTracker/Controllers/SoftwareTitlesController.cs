@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SoftwareTracker.Data;
 using SoftwareTracker.Models;
@@ -17,12 +18,14 @@ public class SoftwareTitlesController : Controller
     public async Task<IActionResult> Index(string? search, string? category)
     {
         var query = _context.SoftwareTitles
+            .Include(s => s.Vendor)
             .Include(s => s.LicensePurchases)
             .Include(s => s.Subscriptions)
             .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(search))
-            query = query.Where(s => s.Name.Contains(search) || (s.Vendor != null && s.Vendor.Contains(search)));
+            query = query.Where(s => s.Name.Contains(search) ||
+                                     (s.Vendor != null && s.Vendor.Name.Contains(search)));
 
         if (!string.IsNullOrWhiteSpace(category))
             query = query.Where(s => s.Category == category);
@@ -44,6 +47,7 @@ public class SoftwareTitlesController : Controller
         if (id == null) return NotFound();
 
         var softwareTitle = await _context.SoftwareTitles
+            .Include(s => s.Vendor)
             .Include(s => s.LicensePurchases)
                 .ThenInclude(lp => lp.MaintenanceContracts)
             .Include(s => s.Subscriptions)
@@ -53,8 +57,9 @@ public class SoftwareTitlesController : Controller
         return View(softwareTitle);
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        await PopulateVendors();
         return View();
     }
 
@@ -68,6 +73,7 @@ public class SoftwareTitlesController : Controller
             TempData["Success"] = $"Software title '{softwareTitle.Name}' created successfully.";
             return RedirectToAction(nameof(Index));
         }
+        await PopulateVendors(softwareTitle.VendorId);
         return View(softwareTitle);
     }
 
@@ -76,6 +82,7 @@ public class SoftwareTitlesController : Controller
         if (id == null) return NotFound();
         var softwareTitle = await _context.SoftwareTitles.FindAsync(id);
         if (softwareTitle == null) return NotFound();
+        await PopulateVendors(softwareTitle.VendorId);
         return View(softwareTitle);
     }
 
@@ -99,6 +106,7 @@ public class SoftwareTitlesController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+        await PopulateVendors(softwareTitle.VendorId);
         return View(softwareTitle);
     }
 
@@ -124,5 +132,12 @@ public class SoftwareTitlesController : Controller
             TempData["Success"] = $"Software title '{softwareTitle.Name}' deleted.";
         }
         return RedirectToAction(nameof(Index));
+    }
+
+    private async Task PopulateVendors(int? selectedId = null)
+    {
+        ViewBag.VendorId = new SelectList(
+            await _context.Vendors.OrderBy(v => v.Name).ToListAsync(),
+            "Id", "Name", selectedId);
     }
 }

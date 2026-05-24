@@ -1,0 +1,39 @@
+@model VendorContact
+@{
+    ViewData["Title"] = "Delete Contact";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        <h2 class="mb-4 text-danger"><i class="bi bi-trash me-2"></i>Delete Contact</h2>
+
+        <div class="card border-danger">
+            <div class="card-body">
+                <p>Are you sure you want to remove <strong>@Model.Name</strong> from <strong>@Model.Vendor?.Name</strong>?</p>
+
+                <dl class="row">
+                    @if (!string.IsNullOrEmpty(Model.Title))
+                    {
+                        <dt class="col-4">Title</dt><dd class="col-8">@Model.Title</dd>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Email))
+                    {
+                        <dt class="col-4">Email</dt><dd class="col-8">@Model.Email</dd>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Phone))
+                    {
+                        <dt class="col-4">Phone</dt><dd class="col-8">@Model.Phone</dd>
+                    }
+                </dl>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete Contact</button>
+                        <a asp-controller="Vendors" asp-action="Details" asp-route-id="@Model.VendorId" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
