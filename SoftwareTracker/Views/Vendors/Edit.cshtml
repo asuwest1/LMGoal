@@ -1,11 +1,11 @@
-@model SoftwareTitle
+@model Vendor
 @{
-    ViewData["Title"] = "Edit Software Title";
+    ViewData["Title"] = "Edit Vendor";
 }
 
 <div class="row justify-content-center">
     <div class="col-lg-7">
-        <h2 class="mb-4"><i class="bi bi-pencil me-2"></i>Edit Software Title</h2>
+        <h2 class="mb-4"><i class="bi bi-pencil me-2"></i>Edit Vendor</h2>
 
         <div class="card">
             <div class="card-body">
@@ -20,15 +20,14 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label asp-for="VendorId" class="form-label fw-semibold">Vendor</label>
-                            <select asp-for="VendorId" asp-items="ViewBag.VendorId" class="form-select">
-                                <option value="">— No Vendor —</option>
-                            </select>
+                            <label asp-for="Email" class="form-label fw-semibold"></label>
+                            <input asp-for="Email" type="email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label asp-for="Category" class="form-label fw-semibold"></label>
-                            <input asp-for="Category" class="form-control" />
-                            <span asp-validation-for="Category" class="text-danger small"></span>
+                            <label asp-for="Phone" class="form-label fw-semibold"></label>
+                            <input asp-for="Phone" type="tel" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger small"></span>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -37,14 +36,18 @@
                         <span asp-validation-for="Website" class="text-danger small"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="Description" class="form-label fw-semibold"></label>
-                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="Description" class="text-danger small"></span>
+                        <label asp-for="Address" class="form-label fw-semibold"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Notes" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
                     </div>
 
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary"><i class="bi bi-check2 me-1"></i>Save Changes</button>
-                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
                         <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-info ms-auto">
                             <i class="bi bi-eye me-1"></i>View Details
                         </a>

@@ -20,6 +20,7 @@ public class MaintenanceContractsController : Controller
         var today = DateTime.Today;
         var query = _context.MaintenanceContracts
             .Include(c => c.LicensePurchase).ThenInclude(lp => lp!.SoftwareTitle)
+            .Include(c => c.Vendor)
             .AsQueryable();
 
         if (licensePurchaseId.HasValue)
@@ -48,6 +49,7 @@ public class MaintenanceContractsController : Controller
         if (id == null) return NotFound();
         var contract = await _context.MaintenanceContracts
             .Include(c => c.LicensePurchase).ThenInclude(lp => lp!.SoftwareTitle)
+            .Include(c => c.Vendor)
             .FirstOrDefaultAsync(c => c.Id == id);
         if (contract == null) return NotFound();
         return View(contract);
@@ -56,6 +58,7 @@ public class MaintenanceContractsController : Controller
     public async Task<IActionResult> Create(int? licensePurchaseId)
     {
         await PopulateLicensePurchases(licensePurchaseId);
+        await PopulateVendors();
         var contract = new MaintenanceContract
         {
             StartDate = DateTime.Today,
@@ -79,6 +82,7 @@ public class MaintenanceContractsController : Controller
             return RedirectToAction(nameof(Index));
         }
         await PopulateLicensePurchases(contract.LicensePurchaseId);
+        await PopulateVendors(contract.VendorId);
         return View(contract);
     }
 
@@ -88,6 +92,7 @@ public class MaintenanceContractsController : Controller
         var contract = await _context.MaintenanceContracts.FindAsync(id);
         if (contract == null) return NotFound();
         await PopulateLicensePurchases(contract.LicensePurchaseId);
+        await PopulateVendors(contract.VendorId);
         return View(contract);
     }
 
@@ -115,6 +120,7 @@ public class MaintenanceContractsController : Controller
             return RedirectToAction(nameof(Index));
         }
         await PopulateLicensePurchases(contract.LicensePurchaseId);
+        await PopulateVendors(contract.VendorId);
         return View(contract);
     }
 
@@ -156,5 +162,12 @@ public class MaintenanceContractsController : Controller
                 Display = $"{lp.SoftwareTitle?.Name} — purchased {lp.PurchaseDate:yyyy-MM-dd} (qty: {lp.Quantity})"
             }),
             "Id", "Display", selectedId);
+    }
+
+    private async Task PopulateVendors(int? selectedId = null)
+    {
+        ViewBag.VendorId = new SelectList(
+            await _context.Vendors.OrderBy(v => v.Name).ToListAsync(),
+            "Id", "Name", selectedId);
     }
 }

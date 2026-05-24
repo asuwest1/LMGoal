@@ -44,6 +44,7 @@ else
             <thead class="table-dark">
                 <tr>
                     <th>Software</th>
+                    <th>Vendor</th>
                     <th>Purchase Date</th>
                     <th>Type</th>
                     <th class="text-center">Qty</th>
@@ -61,6 +62,13 @@ else
                             <a asp-controller="SoftwareTitles" asp-action="Details" asp-route-id="@item.SoftwareTitleId">
                                 @item.SoftwareTitle?.Name
                             </a>
+                        </td>
+                        <td>
+                            @if (item.Vendor != null)
+                            {
+                                <a asp-controller="Vendors" asp-action="Details" asp-route-id="@item.Vendor.Id"
+                                   class="text-decoration-none small">@item.Vendor.Name</a>
+                            }
                         </td>
                         <td>@item.PurchaseDate.ToString("yyyy-MM-dd")</td>
                         <td><span class="badge bg-light text-dark border">@item.LicenseType</span></td>

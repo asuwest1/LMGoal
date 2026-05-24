@@ -19,6 +19,7 @@ public class LicensePurchasesController : Controller
     {
         var query = _context.LicensePurchases
             .Include(lp => lp.SoftwareTitle)
+            .Include(lp => lp.Vendor)
             .Include(lp => lp.MaintenanceContracts)
             .AsQueryable();
 
@@ -42,6 +43,7 @@ public class LicensePurchasesController : Controller
         if (id == null) return NotFound();
         var lp = await _context.LicensePurchases
             .Include(l => l.SoftwareTitle)
+            .Include(l => l.Vendor)
             .Include(l => l.MaintenanceContracts)
             .FirstOrDefaultAsync(l => l.Id == id);
         if (lp == null) return NotFound();
@@ -51,6 +53,7 @@ public class LicensePurchasesController : Controller
     public async Task<IActionResult> Create(int? softwareTitleId)
     {
         await PopulateSoftwareTitles(softwareTitleId);
+        await PopulateVendors();
         var lp = new LicensePurchase { PurchaseDate = DateTime.Today };
         if (softwareTitleId.HasValue) lp.SoftwareTitleId = softwareTitleId.Value;
         return View(lp);
@@ -67,6 +70,7 @@ public class LicensePurchasesController : Controller
             return RedirectToAction(nameof(Index));
         }
         await PopulateSoftwareTitles(licensePurchase.SoftwareTitleId);
+        await PopulateVendors(licensePurchase.VendorId);
         return View(licensePurchase);
     }
 
@@ -76,6 +80,7 @@ public class LicensePurchasesController : Controller
         var lp = await _context.LicensePurchases.FindAsync(id);
         if (lp == null) return NotFound();
         await PopulateSoftwareTitles(lp.SoftwareTitleId);
+        await PopulateVendors(lp.VendorId);
         return View(lp);
     }
 
@@ -99,6 +104,7 @@ public class LicensePurchasesController : Controller
             return RedirectToAction(nameof(Index));
         }
         await PopulateSoftwareTitles(licensePurchase.SoftwareTitleId);
+        await PopulateVendors(licensePurchase.VendorId);
         return View(licensePurchase);
     }
 
@@ -130,6 +136,13 @@ public class LicensePurchasesController : Controller
     {
         ViewBag.SoftwareTitleId = new SelectList(
             await _context.SoftwareTitles.OrderBy(s => s.Name).ToListAsync(),
+            "Id", "Name", selectedId);
+    }
+
+    private async Task PopulateVendors(int? selectedId = null)
+    {
+        ViewBag.VendorId = new SelectList(
+            await _context.Vendors.OrderBy(v => v.Name).ToListAsync(),
             "Id", "Name", selectedId);
     }
 }

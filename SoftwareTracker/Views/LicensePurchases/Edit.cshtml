@@ -24,6 +24,12 @@
                             <select asp-for="LicenseType" asp-items="Html.GetEnumSelectList<LicenseType>()" class="form-select"></select>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label asp-for="VendorId" class="form-label fw-semibold">Vendor</label>
+                        <select asp-for="VendorId" asp-items="ViewBag.VendorId" class="form-select">
+                            <option value="">— No Vendor —</option>
+                        </select>
+                    </div>
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label asp-for="PurchaseDate" class="form-label fw-semibold"></label>

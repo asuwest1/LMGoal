@@ -26,6 +26,10 @@ public class LicensePurchase
     public int SoftwareTitleId { get; set; }
     public SoftwareTitle? SoftwareTitle { get; set; }
 
+    [Display(Name = "Vendor")]
+    public int? VendorId { get; set; }
+    public Vendor? Vendor { get; set; }
+
     [Required]
     [Display(Name = "Purchase Date")]
     [DataType(DataType.Date)]

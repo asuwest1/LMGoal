@@ -20,6 +20,7 @@ public class SubscriptionsController : Controller
         var today = DateTime.Today;
         var query = _context.Subscriptions
             .Include(s => s.SoftwareTitle)
+            .Include(s => s.Vendor)
             .AsQueryable();
 
         if (softwareTitleId.HasValue)
@@ -45,6 +46,7 @@ public class SubscriptionsController : Controller
         if (id == null) return NotFound();
         var sub = await _context.Subscriptions
             .Include(s => s.SoftwareTitle)
+            .Include(s => s.Vendor)
             .FirstOrDefaultAsync(s => s.Id == id);
         if (sub == null) return NotFound();
         return View(sub);
@@ -53,6 +55,7 @@ public class SubscriptionsController : Controller
     public async Task<IActionResult> Create(int? softwareTitleId)
     {
         await PopulateSoftwareTitles(softwareTitleId);
+        await PopulateVendors();
         var sub = new Subscription
         {
             StartDate = DateTime.Today,
@@ -77,6 +80,7 @@ public class SubscriptionsController : Controller
             return RedirectToAction(nameof(Index));
         }
         await PopulateSoftwareTitles(subscription.SoftwareTitleId);
+        await PopulateVendors(subscription.VendorId);
         return View(subscription);
     }
 
@@ -86,6 +90,7 @@ public class SubscriptionsController : Controller
         var sub = await _context.Subscriptions.FindAsync(id);
         if (sub == null) return NotFound();
         await PopulateSoftwareTitles(sub.SoftwareTitleId);
+        await PopulateVendors(sub.VendorId);
         return View(sub);
     }
 
@@ -113,6 +118,7 @@ public class SubscriptionsController : Controller
             return RedirectToAction(nameof(Index));
         }
         await PopulateSoftwareTitles(subscription.SoftwareTitleId);
+        await PopulateVendors(subscription.VendorId);
         return View(subscription);
     }
 
@@ -143,6 +149,13 @@ public class SubscriptionsController : Controller
     {
         ViewBag.SoftwareTitleId = new SelectList(
             await _context.SoftwareTitles.OrderBy(s => s.Name).ToListAsync(),
+            "Id", "Name", selectedId);
+    }
+
+    private async Task PopulateVendors(int? selectedId = null)
+    {
+        ViewBag.VendorId = new SelectList(
+            await _context.Vendors.OrderBy(v => v.Name).ToListAsync(),
             "Id", "Name", selectedId);
     }
 }

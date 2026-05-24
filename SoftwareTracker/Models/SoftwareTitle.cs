@@ -10,8 +10,9 @@ public class SoftwareTitle
     [Display(Name = "Software Name")]
     public string Name { get; set; } = string.Empty;
 
-    [StringLength(200)]
-    public string? Vendor { get; set; }
+    [Display(Name = "Vendor")]
+    public int? VendorId { get; set; }
+    public Vendor? Vendor { get; set; }
 
     [StringLength(100)]
     public string? Category { get; set; }
@@ -20,7 +21,7 @@ public class SoftwareTitle
     public string? Description { get; set; }
 
     [StringLength(500)]
-    [Display(Name = "Vendor Website")]
+    [Display(Name = "Product Website")]
     public string? Website { get; set; }
 
     public ICollection<LicensePurchase> LicensePurchases { get; set; } = new List<LicensePurchase>();

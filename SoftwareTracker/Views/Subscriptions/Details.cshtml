@@ -36,6 +36,14 @@
                             @Model.SoftwareTitle?.Name
                         </a>
                     </dd>
+                    <dt class="col-5">Vendor</dt>
+                    <dd class="col-7">
+                        @if (Model.Vendor != null)
+                        {
+                            <a asp-controller="Vendors" asp-action="Details" asp-route-id="@Model.Vendor.Id">@Model.Vendor.Name</a>
+                        }
+                        else { <span>—</span> }
+                    </dd>
                     <dt class="col-5">Reference</dt>
                     <dd class="col-7">@(Model.SubscriptionReference ?? "—")</dd>
                     <dt class="col-5">Start Date</dt>
