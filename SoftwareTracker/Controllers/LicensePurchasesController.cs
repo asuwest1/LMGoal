@@ -50,18 +50,20 @@ public class LicensePurchasesController : Controller
         return View(lp);
     }
 
-    public async Task<IActionResult> Create(int? softwareTitleId)
+    public async Task<IActionResult> Create(int? softwareTitleId, int? vendorId)
     {
         await PopulateSoftwareTitles(softwareTitleId);
-        await PopulateVendors();
+        await PopulateVendors(vendorId);
         var lp = new LicensePurchase { PurchaseDate = DateTime.Today };
         if (softwareTitleId.HasValue) lp.SoftwareTitleId = softwareTitleId.Value;
+        if (vendorId.HasValue) lp.VendorId = vendorId.Value;
         return View(lp);
     }
 
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(LicensePurchase licensePurchase)
     {
+        await ValidateVendorExists(licensePurchase.VendorId);
         if (ModelState.IsValid)
         {
             _context.LicensePurchases.Add(licensePurchase);
@@ -88,6 +90,7 @@ public class LicensePurchasesController : Controller
     public async Task<IActionResult> Edit(int id, LicensePurchase licensePurchase)
     {
         if (id != licensePurchase.Id) return NotFound();
+        await ValidateVendorExists(licensePurchase.VendorId);
         if (ModelState.IsValid)
         {
             try
@@ -144,5 +147,11 @@ public class LicensePurchasesController : Controller
         ViewBag.VendorId = new SelectList(
             await _context.Vendors.OrderBy(v => v.Name).ToListAsync(),
             "Id", "Name", selectedId);
+    }
+
+    private async Task ValidateVendorExists(int? vendorId)
+    {
+        if (vendorId.HasValue && !await _context.Vendors.AnyAsync(v => v.Id == vendorId))
+            ModelState.AddModelError("VendorId", "The selected vendor no longer exists.");
     }
 }

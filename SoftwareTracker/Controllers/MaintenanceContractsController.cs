@@ -55,16 +55,17 @@ public class MaintenanceContractsController : Controller
         return View(contract);
     }
 
-    public async Task<IActionResult> Create(int? licensePurchaseId)
+    public async Task<IActionResult> Create(int? licensePurchaseId, int? vendorId)
     {
         await PopulateLicensePurchases(licensePurchaseId);
-        await PopulateVendors();
+        await PopulateVendors(vendorId);
         var contract = new MaintenanceContract
         {
             StartDate = DateTime.Today,
             EndDate = DateTime.Today.AddYears(1)
         };
         if (licensePurchaseId.HasValue) contract.LicensePurchaseId = licensePurchaseId.Value;
+        if (vendorId.HasValue) contract.VendorId = vendorId.Value;
         return View(contract);
     }
 
@@ -74,6 +75,7 @@ public class MaintenanceContractsController : Controller
         if (contract.EndDate <= contract.StartDate)
             ModelState.AddModelError("EndDate", "End date must be after start date.");
 
+        await ValidateVendorExists(contract.VendorId);
         if (ModelState.IsValid)
         {
             _context.MaintenanceContracts.Add(contract);
@@ -104,6 +106,7 @@ public class MaintenanceContractsController : Controller
         if (contract.EndDate <= contract.StartDate)
             ModelState.AddModelError("EndDate", "End date must be after start date.");
 
+        await ValidateVendorExists(contract.VendorId);
         if (ModelState.IsValid)
         {
             try
@@ -169,5 +172,11 @@ public class MaintenanceContractsController : Controller
         ViewBag.VendorId = new SelectList(
             await _context.Vendors.OrderBy(v => v.Name).ToListAsync(),
             "Id", "Name", selectedId);
+    }
+
+    private async Task ValidateVendorExists(int? vendorId)
+    {
+        if (vendorId.HasValue && !await _context.Vendors.AnyAsync(v => v.Id == vendorId))
+            ModelState.AddModelError("VendorId", "The selected vendor no longer exists.");
     }
 }

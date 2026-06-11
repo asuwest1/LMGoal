@@ -24,6 +24,17 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(vc => vc.VendorId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // Declared explicitly so the filtered index below doesn't replace the
+        // conventional FK index (the filter makes it unusable for general joins).
+        modelBuilder.Entity<VendorContact>()
+            .HasIndex(vc => vc.VendorId);
+
+        // At most one primary contact per vendor, enforced by the database.
+        modelBuilder.Entity<VendorContact>()
+            .HasIndex(vc => vc.VendorId, "IX_VendorContacts_VendorId_IsPrimary")
+            .IsUnique()
+            .HasFilter("[IsPrimary] = 1");
+
         modelBuilder.Entity<SoftwareTitle>()
             .HasOne(st => st.Vendor)
             .WithMany(v => v.SoftwareTitles)

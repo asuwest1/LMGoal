@@ -1,11 +1,15 @@
 using System;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using SoftwareTracker.Data;
 
 #nullable disable
 
 namespace SoftwareTracker.Migrations
 {
     /// <inheritdoc />
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20260101000000_InitialCreate")]
     public partial class InitialCreate : Migration
     {
         /// <inheritdoc />

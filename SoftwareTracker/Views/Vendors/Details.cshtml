@@ -156,7 +156,7 @@
         <div class="card mb-3">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h6 class="mb-0"><i class="bi bi-receipt me-1"></i>License Purchases (@Model.LicensePurchases.Count)</h6>
-                <a asp-controller="LicensePurchases" asp-action="Create" class="btn btn-sm btn-outline-primary">
+                <a asp-controller="LicensePurchases" asp-action="Create" asp-route-vendorId="@Model.Id" class="btn btn-sm btn-outline-primary">
                     <i class="bi bi-plus me-1"></i>Add
                 </a>
             </div>
@@ -195,7 +195,7 @@
         <div class="card mb-3">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h6 class="mb-0"><i class="bi bi-tools me-1"></i>Maintenance Contracts (@Model.MaintenanceContracts.Count)</h6>
-                <a asp-controller="MaintenanceContracts" asp-action="Create" class="btn btn-sm btn-outline-warning">
+                <a asp-controller="MaintenanceContracts" asp-action="Create" asp-route-vendorId="@Model.Id" class="btn btn-sm btn-outline-warning">
                     <i class="bi bi-plus me-1"></i>Add
                 </a>
             </div>
@@ -247,7 +247,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h6 class="mb-0"><i class="bi bi-arrow-repeat me-1"></i>Subscriptions (@Model.Subscriptions.Count)</h6>
-                <a asp-controller="Subscriptions" asp-action="Create" class="btn btn-sm btn-outline-success">
+                <a asp-controller="Subscriptions" asp-action="Create" asp-route-vendorId="@Model.Id" class="btn btn-sm btn-outline-success">
                     <i class="bi bi-plus me-1"></i>Add
                 </a>
             </div>

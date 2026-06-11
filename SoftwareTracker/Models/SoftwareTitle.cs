@@ -21,6 +21,7 @@ public class SoftwareTitle
     public string? Description { get; set; }
 
     [StringLength(500)]
+    [Url]
     [Display(Name = "Product Website")]
     public string? Website { get; set; }
 

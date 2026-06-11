@@ -1,4 +1,4 @@
-@model Vendor
+@model VendorSummary
 @{
     ViewData["Title"] = "Delete Vendor";
 }
@@ -12,9 +12,9 @@
                 <p class="lead">Are you sure you want to delete <strong>@Model.Name</strong>?</p>
 
                 @{
-                    var total = Model.Contacts.Count + Model.SoftwareTitles.Count +
-                                Model.LicensePurchases.Count + Model.MaintenanceContracts.Count +
-                                Model.Subscriptions.Count;
+                    var total = Model.ContactCount + Model.SoftwareTitleCount +
+                                Model.LicensePurchaseCount + Model.MaintenanceContractCount +
+                                Model.SubscriptionCount;
                 }
                 @if (total > 0)
                 {
@@ -22,11 +22,11 @@
                         <i class="bi bi-exclamation-triangle me-2"></i>
                         This vendor has linked records:
                         <ul class="mb-0 mt-1">
-                            @if (Model.Contacts.Count > 0) { <li>@Model.Contacts.Count contact(s)</li> }
-                            @if (Model.SoftwareTitles.Count > 0) { <li>@Model.SoftwareTitles.Count software title(s) — vendor link will be cleared</li> }
-                            @if (Model.LicensePurchases.Count > 0) { <li>@Model.LicensePurchases.Count license purchase(s) — vendor link will be cleared</li> }
-                            @if (Model.MaintenanceContracts.Count > 0) { <li>@Model.MaintenanceContracts.Count maintenance contract(s) — vendor link will be cleared</li> }
-                            @if (Model.Subscriptions.Count > 0) { <li>@Model.Subscriptions.Count subscription(s) — vendor link will be cleared</li> }
+                            @if (Model.ContactCount > 0) { <li>@Model.ContactCount contact(s)</li> }
+                            @if (Model.SoftwareTitleCount > 0) { <li>@Model.SoftwareTitleCount software title(s) — vendor link will be cleared</li> }
+                            @if (Model.LicensePurchaseCount > 0) { <li>@Model.LicensePurchaseCount license purchase(s) — vendor link will be cleared</li> }
+                            @if (Model.MaintenanceContractCount > 0) { <li>@Model.MaintenanceContractCount maintenance contract(s) — vendor link will be cleared</li> }
+                            @if (Model.SubscriptionCount > 0) { <li>@Model.SubscriptionCount subscription(s) — vendor link will be cleared</li> }
                         </ul>
                         <div class="mt-1">Contacts will be permanently deleted. Other linked records will have their vendor cleared.</div>
                     </div>

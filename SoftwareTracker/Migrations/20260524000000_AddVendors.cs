@@ -1,10 +1,14 @@
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using SoftwareTracker.Data;
 
 #nullable disable
 
 namespace SoftwareTracker.Migrations
 {
     /// <inheritdoc />
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20260524000000_AddVendors")]
     public partial class AddVendors : Migration
     {
         /// <inheritdoc />
@@ -53,15 +57,36 @@ namespace SoftwareTracker.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.DropColumn(
-                name: "Vendor",
-                table: "SoftwareTitles");
-
             migrationBuilder.AddColumn<int>(
                 name: "VendorId",
                 table: "SoftwareTitles",
                 type: "int",
                 nullable: true);
+
+            // Preserve existing vendor data: create Vendor rows from the distinct
+            // legacy free-text names (carrying over a website recorded under the old
+            // "Vendor Website" label where available), link the titles to them, and
+            // only then drop the legacy column.
+            migrationBuilder.Sql(@"
+INSERT INTO [Vendors] ([Name], [Website])
+SELECT s.[Vendor],
+       (SELECT TOP 1 s2.[Website]
+        FROM [SoftwareTitles] s2
+        WHERE s2.[Vendor] = s.[Vendor]
+          AND s2.[Website] IS NOT NULL AND s2.[Website] <> '')
+FROM [SoftwareTitles] s
+WHERE s.[Vendor] IS NOT NULL AND LTRIM(RTRIM(s.[Vendor])) <> ''
+GROUP BY s.[Vendor];");
+
+            migrationBuilder.Sql(@"
+UPDATE s
+SET s.[VendorId] = v.[Id]
+FROM [SoftwareTitles] s
+INNER JOIN [Vendors] v ON v.[Name] = s.[Vendor];");
+
+            migrationBuilder.DropColumn(
+                name: "Vendor",
+                table: "SoftwareTitles");
 
             migrationBuilder.AddColumn<int>(
                 name: "VendorId",
@@ -85,6 +110,14 @@ namespace SoftwareTracker.Migrations
                 name: "IX_VendorContacts_VendorId",
                 table: "VendorContacts",
                 column: "VendorId");
+
+            // Enforce at most one primary contact per vendor at the database level.
+            migrationBuilder.CreateIndex(
+                name: "IX_VendorContacts_VendorId_IsPrimary",
+                table: "VendorContacts",
+                column: "VendorId",
+                unique: true,
+                filter: "[IsPrimary] = 1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SoftwareTitles_VendorId",
@@ -147,23 +180,31 @@ namespace SoftwareTracker.Migrations
             migrationBuilder.DropForeignKey(name: "FK_MaintenanceContracts_Vendors_VendorId", table: "MaintenanceContracts");
             migrationBuilder.DropForeignKey(name: "FK_Subscriptions_Vendors_VendorId", table: "Subscriptions");
 
-            migrationBuilder.DropIndex(name: "IX_SoftwareTitles_VendorId", table: "SoftwareTitles");
-            migrationBuilder.DropIndex(name: "IX_LicensePurchases_VendorId", table: "LicensePurchases");
-            migrationBuilder.DropIndex(name: "IX_MaintenanceContracts_VendorId", table: "MaintenanceContracts");
-            migrationBuilder.DropIndex(name: "IX_Subscriptions_VendorId", table: "Subscriptions");
-            migrationBuilder.DropIndex(name: "IX_VendorContacts_VendorId", table: "VendorContacts");
-
-            migrationBuilder.DropColumn(name: "VendorId", table: "SoftwareTitles");
-            migrationBuilder.DropColumn(name: "VendorId", table: "LicensePurchases");
-            migrationBuilder.DropColumn(name: "VendorId", table: "MaintenanceContracts");
-            migrationBuilder.DropColumn(name: "VendorId", table: "Subscriptions");
-
             migrationBuilder.AddColumn<string>(
                 name: "Vendor",
                 table: "SoftwareTitles",
                 type: "nvarchar(200)",
                 maxLength: 200,
                 nullable: true);
+
+            // Restore the legacy free-text vendor names before the link data is dropped.
+            migrationBuilder.Sql(@"
+UPDATE s
+SET s.[Vendor] = v.[Name]
+FROM [SoftwareTitles] s
+INNER JOIN [Vendors] v ON v.[Id] = s.[VendorId];");
+
+            migrationBuilder.DropIndex(name: "IX_SoftwareTitles_VendorId", table: "SoftwareTitles");
+            migrationBuilder.DropIndex(name: "IX_LicensePurchases_VendorId", table: "LicensePurchases");
+            migrationBuilder.DropIndex(name: "IX_MaintenanceContracts_VendorId", table: "MaintenanceContracts");
+            migrationBuilder.DropIndex(name: "IX_Subscriptions_VendorId", table: "Subscriptions");
+            migrationBuilder.DropIndex(name: "IX_VendorContacts_VendorId", table: "VendorContacts");
+            migrationBuilder.DropIndex(name: "IX_VendorContacts_VendorId_IsPrimary", table: "VendorContacts");
+
+            migrationBuilder.DropColumn(name: "VendorId", table: "SoftwareTitles");
+            migrationBuilder.DropColumn(name: "VendorId", table: "LicensePurchases");
+            migrationBuilder.DropColumn(name: "VendorId", table: "MaintenanceContracts");
+            migrationBuilder.DropColumn(name: "VendorId", table: "Subscriptions");
 
             migrationBuilder.DropTable(name: "VendorContacts");
             migrationBuilder.DropTable(name: "Vendors");

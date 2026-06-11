@@ -23,6 +23,7 @@
                             <select asp-for="VendorId" asp-items="ViewBag.VendorId" class="form-select">
                                 <option value="">— Select Vendor —</option>
                             </select>
+                            <span asp-validation-for="VendorId" class="text-danger small"></span>
                             <div class="form-text">
                                 <a asp-controller="Vendors" asp-action="Create" target="_blank">Add a new vendor</a>
                             </div>

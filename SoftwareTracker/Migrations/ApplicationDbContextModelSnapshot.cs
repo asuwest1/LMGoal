@@ -49,6 +49,7 @@ namespace SoftwareTracker.Migrations
                 b.Property<string>("Notes").HasMaxLength(500).HasColumnType("nvarchar(500)");
                 b.HasKey("Id");
                 b.HasIndex("VendorId");
+                b.HasIndex(new[] { "VendorId" }, "IX_VendorContacts_VendorId_IsPrimary").IsUnique().HasFilter("[IsPrimary] = 1");
                 b.ToTable("VendorContacts");
             });
 
