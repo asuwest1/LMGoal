@@ -1,10 +1,14 @@
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using SoftwareTracker.Data;
 
 #nullable disable
 
 namespace SoftwareTracker.Migrations
 {
     /// <inheritdoc />
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20260524000000_AddVendors")]
     public partial class AddVendors : Migration
     {
         /// <inheritdoc />
