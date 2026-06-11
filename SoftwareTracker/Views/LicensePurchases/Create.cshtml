@@ -30,7 +30,8 @@
                         <select asp-for="VendorId" asp-items="ViewBag.VendorId" class="form-select">
                             <option value="">— Select Vendor (optional) —</option>
                         </select>
-                        <div class="form-text">The vendor this purchase was made from. Leave blank to inherit from software title.</div>
+                        <span asp-validation-for="VendorId" class="text-danger small"></span>
+                        <div class="form-text">The vendor this purchase was made from. Optional.</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-3">

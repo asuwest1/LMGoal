@@ -24,6 +24,7 @@
                         <select asp-for="VendorId" asp-items="ViewBag.VendorId" class="form-select">
                             <option value="">— Select Vendor (optional) —</option>
                         </select>
+                        <span asp-validation-for="VendorId" class="text-danger small"></span>
                         <div class="form-text">Link to a vendor record for managed contact info.</div>
                     </div>
                     <div class="row">

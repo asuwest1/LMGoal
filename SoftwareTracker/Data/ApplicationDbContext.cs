@@ -24,6 +24,12 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(vc => vc.VendorId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // At most one primary contact per vendor, enforced by the database.
+        modelBuilder.Entity<VendorContact>()
+            .HasIndex(vc => vc.VendorId, "IX_VendorContacts_VendorId_IsPrimary")
+            .IsUnique()
+            .HasFilter("[IsPrimary] = 1");
+
         modelBuilder.Entity<SoftwareTitle>()
             .HasOne(st => st.Vendor)
             .WithMany(v => v.SoftwareTitles)

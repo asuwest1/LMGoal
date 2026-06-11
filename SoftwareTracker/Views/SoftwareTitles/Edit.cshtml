@@ -24,6 +24,7 @@
                             <select asp-for="VendorId" asp-items="ViewBag.VendorId" class="form-select">
                                 <option value="">— No Vendor —</option>
                             </select>
+                            <span asp-validation-for="VendorId" class="text-danger small"></span>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label asp-for="Category" class="form-label fw-semibold"></label>

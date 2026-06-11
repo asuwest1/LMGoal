@@ -52,10 +52,10 @@ public class SubscriptionsController : Controller
         return View(sub);
     }
 
-    public async Task<IActionResult> Create(int? softwareTitleId)
+    public async Task<IActionResult> Create(int? softwareTitleId, int? vendorId)
     {
         await PopulateSoftwareTitles(softwareTitleId);
-        await PopulateVendors();
+        await PopulateVendors(vendorId);
         var sub = new Subscription
         {
             StartDate = DateTime.Today,
@@ -63,6 +63,7 @@ public class SubscriptionsController : Controller
             AutoRenews = true
         };
         if (softwareTitleId.HasValue) sub.SoftwareTitleId = softwareTitleId.Value;
+        if (vendorId.HasValue) sub.VendorId = vendorId.Value;
         return View(sub);
     }
 
@@ -72,6 +73,7 @@ public class SubscriptionsController : Controller
         if (subscription.EndDate <= subscription.StartDate)
             ModelState.AddModelError("EndDate", "End/renewal date must be after start date.");
 
+        await ValidateVendorExists(subscription.VendorId);
         if (ModelState.IsValid)
         {
             _context.Subscriptions.Add(subscription);
@@ -102,6 +104,7 @@ public class SubscriptionsController : Controller
         if (subscription.EndDate <= subscription.StartDate)
             ModelState.AddModelError("EndDate", "End/renewal date must be after start date.");
 
+        await ValidateVendorExists(subscription.VendorId);
         if (ModelState.IsValid)
         {
             try
@@ -157,5 +160,11 @@ public class SubscriptionsController : Controller
         ViewBag.VendorId = new SelectList(
             await _context.Vendors.OrderBy(v => v.Name).ToListAsync(),
             "Id", "Name", selectedId);
+    }
+
+    private async Task ValidateVendorExists(int? vendorId)
+    {
+        if (vendorId.HasValue && !await _context.Vendors.AnyAsync(v => v.Id == vendorId))
+            ModelState.AddModelError("VendorId", "The selected vendor no longer exists.");
     }
 }

@@ -1,4 +1,4 @@
-@model IEnumerable<Vendor>
+@model IEnumerable<VendorSummary>
 @{
     ViewData["Title"] = "Vendors";
 }
@@ -59,19 +59,19 @@ else
                         </td>
                         <td>@vendor.Phone</td>
                         <td class="text-center">
-                            <span class="badge bg-secondary">@vendor.Contacts.Count</span>
+                            <span class="badge bg-secondary">@vendor.ContactCount</span>
                         </td>
                         <td class="text-center">
-                            <span class="badge bg-info">@vendor.SoftwareTitles.Count</span>
+                            <span class="badge bg-info">@vendor.SoftwareTitleCount</span>
                         </td>
                         <td class="text-center">
-                            <span class="badge bg-primary">@vendor.LicensePurchases.Count</span>
+                            <span class="badge bg-primary">@vendor.LicensePurchaseCount</span>
                         </td>
                         <td class="text-center">
-                            <span class="badge bg-warning text-dark">@vendor.MaintenanceContracts.Count</span>
+                            <span class="badge bg-warning text-dark">@vendor.MaintenanceContractCount</span>
                         </td>
                         <td class="text-center">
-                            <span class="badge bg-success">@vendor.Subscriptions.Count</span>
+                            <span class="badge bg-success">@vendor.SubscriptionCount</span>
                         </td>
                         <td class="text-end text-nowrap">
                             <a asp-action="Details" asp-route-id="@vendor.Id" class="btn btn-sm btn-outline-secondary me-1">

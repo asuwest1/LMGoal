@@ -66,6 +66,7 @@ public class SoftwareTitlesController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(SoftwareTitle softwareTitle)
     {
+        await ValidateVendorExists(softwareTitle.VendorId);
         if (ModelState.IsValid)
         {
             _context.SoftwareTitles.Add(softwareTitle);
@@ -91,6 +92,7 @@ public class SoftwareTitlesController : Controller
     {
         if (id != softwareTitle.Id) return NotFound();
 
+        await ValidateVendorExists(softwareTitle.VendorId);
         if (ModelState.IsValid)
         {
             try
@@ -114,6 +116,7 @@ public class SoftwareTitlesController : Controller
     {
         if (id == null) return NotFound();
         var softwareTitle = await _context.SoftwareTitles
+            .Include(s => s.Vendor)
             .Include(s => s.LicensePurchases)
             .Include(s => s.Subscriptions)
             .FirstOrDefaultAsync(s => s.Id == id);
@@ -139,5 +142,11 @@ public class SoftwareTitlesController : Controller
         ViewBag.VendorId = new SelectList(
             await _context.Vendors.OrderBy(v => v.Name).ToListAsync(),
             "Id", "Name", selectedId);
+    }
+
+    private async Task ValidateVendorExists(int? vendorId)
+    {
+        if (vendorId.HasValue && !await _context.Vendors.AnyAsync(v => v.Id == vendorId))
+            ModelState.AddModelError("VendorId", "The selected vendor no longer exists.");
     }
 }

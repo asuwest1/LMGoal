@@ -10,6 +10,7 @@ public class Vendor
     public string Name { get; set; } = string.Empty;
 
     [StringLength(500)]
+    [Url]
     public string? Website { get; set; }
 
     [StringLength(50)]

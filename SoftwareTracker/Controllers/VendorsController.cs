@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SoftwareTracker.Data;
@@ -16,13 +17,7 @@ public class VendorsController : Controller
 
     public async Task<IActionResult> Index(string? search)
     {
-        var query = _context.Vendors
-            .Include(v => v.Contacts)
-            .Include(v => v.SoftwareTitles)
-            .Include(v => v.LicensePurchases)
-            .Include(v => v.MaintenanceContracts)
-            .Include(v => v.Subscriptions)
-            .AsQueryable();
+        var query = _context.Vendors.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(search))
             query = query.Where(v => v.Name.Contains(search) ||
@@ -30,7 +25,7 @@ public class VendorsController : Controller
                                      (v.Website != null && v.Website.Contains(search)));
 
         ViewBag.Search = search;
-        return View(await query.OrderBy(v => v.Name).ToListAsync());
+        return View(await query.OrderBy(v => v.Name).Select(VendorSummaryProjection).ToListAsync());
     }
 
     public async Task<IActionResult> Details(int? id)
@@ -42,13 +37,13 @@ public class VendorsController : Controller
             .Include(v => v.SoftwareTitles)
             .Include(v => v.LicensePurchases)
                 .ThenInclude(lp => lp.SoftwareTitle)
-            .Include(v => v.LicensePurchases)
-                .ThenInclude(lp => lp.MaintenanceContracts)
             .Include(v => v.MaintenanceContracts)
                 .ThenInclude(mc => mc.LicensePurchase)
                     .ThenInclude(lp => lp!.SoftwareTitle)
             .Include(v => v.Subscriptions)
                 .ThenInclude(s => s.SoftwareTitle)
+            .AsNoTracking()
+            .AsSplitQuery()
             .FirstOrDefaultAsync(v => v.Id == id);
 
         if (vendor == null) return NotFound();
@@ -61,7 +56,7 @@ public class VendorsController : Controller
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Vendor vendor)
+    public async Task<IActionResult> Create([Bind("Id,Name,Website,Phone,Email,Address,Notes")] Vendor vendor)
     {
         if (ModelState.IsValid)
         {
@@ -82,7 +77,7 @@ public class VendorsController : Controller
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, Vendor vendor)
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Website,Phone,Email,Address,Notes")] Vendor vendor)
     {
         if (id != vendor.Id) return NotFound();
 
@@ -108,12 +103,9 @@ public class VendorsController : Controller
     {
         if (id == null) return NotFound();
         var vendor = await _context.Vendors
-            .Include(v => v.Contacts)
-            .Include(v => v.SoftwareTitles)
-            .Include(v => v.LicensePurchases)
-            .Include(v => v.MaintenanceContracts)
-            .Include(v => v.Subscriptions)
-            .FirstOrDefaultAsync(v => v.Id == id);
+            .Where(v => v.Id == id)
+            .Select(VendorSummaryProjection)
+            .FirstOrDefaultAsync();
         if (vendor == null) return NotFound();
         return View(vendor);
     }
@@ -130,4 +122,20 @@ public class VendorsController : Controller
         }
         return RedirectToAction(nameof(Index));
     }
+
+    // Translated by EF to COUNT subqueries so the list and delete pages
+    // never materialize the related collections.
+    private static readonly Expression<Func<Vendor, VendorSummary>> VendorSummaryProjection = v => new VendorSummary
+    {
+        Id = v.Id,
+        Name = v.Name,
+        Website = v.Website,
+        Phone = v.Phone,
+        Email = v.Email,
+        ContactCount = v.Contacts.Count,
+        SoftwareTitleCount = v.SoftwareTitles.Count,
+        LicensePurchaseCount = v.LicensePurchases.Count,
+        MaintenanceContractCount = v.MaintenanceContracts.Count,
+        SubscriptionCount = v.Subscriptions.Count
+    };
 }
